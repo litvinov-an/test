@@ -1,0 +1,29 @@
+﻿SELECT a.id 
+FROM test as a
+HAVING (SELECT sum(b.amount) 
+    FROM test as b WHERE 
+    b.date <= a.date
+    ORDER BY b.date ASC) < 0 AND
+        (SELECT sum(b.amount) 
+    FROM test as b WHERE 
+    b.date < a.date
+    ORDER BY b.date ASC) > 0
+ORDER BY a.date DESC
+LIMIT 1
+
+
+Замечание: рабочая таблица - test
+
+
+
+
+
+
+v.2
+SELECT a.id
+FROM test as a
+INNER JOIN test as b ON b.date <= a.DATE
+GROUP BY a.id,a.amount
+HAVING sum(b.amount)<0 AND (sum(b.amount)-a.amount)>0
+ORDER BY a.date DESC
+LIMIT 1
